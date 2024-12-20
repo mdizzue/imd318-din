@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Personal Website</title>
+    <style>
+        /* Reset and Base Styles */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            color: #fff;
+        }
+
+        /* Cool Animated Background */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0,0,0,0.2), rgba(0,0,0,0.8)),
+                        url('https://www.transparenttextures.com/patterns/dark-matter.png');
+            z-index: -2;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2;
+        }
+
+        header h1 {
+            color: #00d8ff;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            background-color: #2a9d8f;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #00bcd4;
+        }
+
+        /* Amazing Digital Clock */
+        .clock {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #66fcf1;
+            text-shadow: 0 0 10px #66fcf1, 0 0 20px #66fcf1, 0 0 30px #2a9d8f;
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 10px #66fcf1, 0 0 20px #66fcf1, 0 0 30px #2a9d8f, 0 0 40px #2a9d8f;
+            }
+            100% {
+                text-shadow: 0 0 20px #45a29e, 0 0 30px #45a29e, 0 0 50px #45a29e, 0 0 60px #45a29e;
+            }
+        }
+
+        /* Content */
+        .content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            height: calc(100vh - 100px);
+            padding: 0 20px;
+        }
+
+        .content img {
+            max-width: 250px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+
+        .text-content h2 {
+            color: #66FCF1;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .text-content p {
+            font-size: 1.2rem;
+            margin: 15px 0;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle Animation -->
+    <canvas id="background"></canvas>
+
+    <!-- Header -->
+    <header>
+        <h1>Welcome!</h1>
+        <div class="clock" id="clock">Loading...</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="About me.html">About me</a>
+            <a href="Education.html">Education</a>
+            <a href="Experience.html">Experience</a>
+            <a href="Family.html">Family</a>
+            <a href="Gallery.html">Gallery</a>
+        </nav>
+    </header>
+
+    <!-- Content -->
+    <section class="content">
+        <div class="text-content">
+            <h2>I'm Muhammad Izzuddin</h2>
+            <p>Thanks for visiting my website. Here is some information about me, enjoy it!</p>
+        </div>
+        <img src="kawe.png" alt="Profile Image">
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>DINZ</p>
+    </footer>
+
+    <script>
+        // Update the digital clock
+        function updateClock() {
+            const clockElement = document.getElementById('clock');
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Particle Background Animation
+        const canvas = document.getElementById('background');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particles = [];
+        const colors = ['#66fcf1', '#45a29e', '#00bcd4', '#2a9d8f'];
+
+        function createParticles() {
+            for (let i = 0; i < 100; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 5 + 1,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speedX: Math.random() * 2 - 1,
+                    speedY: Math.random() * 2 - 1,
+                });
+            }
+        }
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+                p.x += p.speedX;
+                p.y += p.speedY;
+
+                if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+            });
+        }
+
+        function animateParticles() {
+            drawParticles();
+            requestAnimationFrame(animateParticles);
+        }
+
+        createParticles();
+        animateParticles();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
